@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Soufiane Lagnina – Data Analyst | Data Integration &amp; BI</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f8fb;--card:#fff;--text:#1b2733;--muted:#5a6878;--accent:#1f4e79;--accent2:#2f75b5;--line:#dce4ee;--chip:#e8f0f9;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1720;--card:#17212d;--text:#e6edf5;--muted:#9fb0c3;--accent:#7db4e8;--accent2:#5a9bd8;--line:#2a3a4b;--chip:#1f3042;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1720;--card:#17212d;--text:#e6edf5;--muted:#9fb0c3;--accent:#7db4e8;--accent2:#5a9bd8;--line:#2a3a4b;--chip:#1f3042;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+nav{display:flex;gap:18px;justify-content:flex-end;padding:18px 0;font-size:14px;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none}nav a:hover{color:var(--accent)}
+.hero{padding:40px 0 56px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.avatar{width:104px;height:104px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:grid;place-items:center;font-size:38px;font-weight:700;flex:none}
+h1{margin:0;font-size:clamp(30px,6vw,46px);line-height:1.15;color:var(--accent)}
+.role{margin:6px 0 14px;font-size:18px;color:var(--accent2);font-weight:600}
+.lead{max-width:620px;color:var(--muted);margin:0 0 18px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;border:1px solid var(--accent);color:var(--accent)}
+.btn.p{background:var(--accent);color:var(--bg)}
+section{padding:36px 0;border-top:1px solid var(--line)}
+h2{margin:0 0 20px;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card h3{margin:0 0 8px;font-size:16px;color:var(--accent)}
+.card p,.card li{color:var(--muted);font-size:15px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{background:var(--chip);color:var(--accent);padding:3px 10px;border-radius:999px;font-size:13px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;margin:18px 0}
+.step{flex:1 1 130px;background:var(--chip);border-radius:10px;padding:12px;font-size:14px;text-align:center;color:var(--text)}
+.step b{display:block;color:var(--accent);margin-bottom:2px}
+.arrow{align-self:center;color:var(--accent2);font-weight:700}
+ul{margin:10px 0 0;padding-left:20px}li{margin:6px 0}
+.job{margin-bottom:26px}.job h3{margin:0;font-size:18px;color:var(--text)}
+.meta{color:var(--muted);font-size:14px;margin:2px 0 8px}
+.scroll{overflow-x:auto}
+footer{padding:36px 0 48px;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="#about">About</a><a href="#project">Key Project</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#contact">Contact</a></nav>
+
+<header class="hero">
+  <div class="avatar" aria-hidden="true">SL</div>
+  <div>
+    <h1>Soufiane Lagnina</h1>
+    <div class="role">Data Analyst | Data Integration &amp; Business Intelligence</div>
+    <p class="lead">I turn data from multiple sources into reliable, documented, decision-ready information using SQL, Python, Microsoft Fabric, and Power BI.</p>
+    <div class="btns"><a class="btn p" href="#project">View key project</a><a class="btn" href="#contact">Get in touch</a></div>
+  </div>
+</header>
+
+<section id="about">
+  <h2>About</h2>
+  <p>Data and business intelligence professional with five years of experience collecting, transforming, validating, and analyzing data to support operational and strategic decision-making. My work covers end-to-end data flow analysis, mapping and transformation rules, data quality controls, reconciliation, technical documentation, and stakeholder requirements analysis. Based in Montréal, QC.</p>
+</section>
+
+<section id="project">
+  <h2>Key Project</h2>
+  <div class="card">
+    <h3>Provincial Product Database — Santé Québec</h3>
+    <p>An initiative to centralize product reference data from multiple internal sources, with controlled reconciliation, standardization, and traceability of product descriptions and attributes.</p>
+    <div class="scroll"><div class="flow" role="img" aria-label="Simplified workflow from internal sources to Power BI reporting">
+      <div class="step"><b>Sources</b>Multiple internal sources</div><span class="arrow">→</span>
+      <div class="step"><b>Ingest</b>Fabric pipelines</div><span class="arrow">→</span>
+      <div class="step"><b>Transform &amp; validate</b>SQL, Python notebooks</div><span class="arrow">→</span>
+      <div class="step"><b>Reference data</b>Lakehouse / Warehouse</div><span class="arrow">→</span>
+      <div class="step"><b>Report</b>Power BI</div>
+    </div></div>
+    <p style="font-size:13px">Simplified workflow for illustration.</p>
+    <ul>
+      <li>Analyzed end-to-end data flows across sources, including structures, dependencies, and transformations through to target systems.</li>
+      <li>Investigated data directly with SQL to identify gaps, anomalies, and data quality issues.</li>
+      <li>Defined and documented mapping, transformation, business, and validation rules for product reference data.</li>
+      <li>Built SQL and Python processes in Microsoft Fabric to collect, clean, transform, and structure data (ETL/ELT).</li>
+      <li>Performed validation and reconciliation across sources to ensure integrity and consistency.</li>
+      <li>Collaborated with business, technical, and development teams on requirements, testing, and UAT.</li>
+      <li>Produced technical and functional documentation: data flows, mappings, definitions, and data lineage.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <div class="grid">
+    <div class="card"><h3>Data Analysis</h3><div class="chips"><span class="chip">SQL</span><span class="chip">Python</span><span class="chip">Profiling</span><span class="chip">Reconciliation</span><span class="chip">Data quality</span></div></div>
+    <div class="card"><h3>Data Integration</h3><div class="chips"><span class="chip">ETL/ELT</span><span class="chip">Notebooks</span><span class="chip">Pipelines</span><span class="chip">Mapping rules</span><span class="chip">Data flow documentation</span></div></div>
+    <div class="card"><h3>Databases &amp; Architecture</h3><div class="chips"><span class="chip">Fabric Lakehouse</span><span class="chip">Fabric Warehouse</span><span class="chip">Relational modeling</span><span class="chip">Star schema</span></div></div>
+    <div class="card"><h3>Business Intelligence</h3><div class="chips"><span class="chip">Power BI</span><span class="chip">Power Query</span><span class="chip">DAX</span><span class="chip">Semantic models</span><span class="chip">KPIs</span></div></div>
+    <div class="card"><h3>Microsoft Platform</h3><div class="chips"><span class="chip">Fabric</span><span class="chip">SharePoint Online</span><span class="chip">Power Apps</span><span class="chip">Power Automate</span><span class="chip">Microsoft Lists</span></div></div>
+    <div class="card"><h3>Practices</h3><div class="chips"><span class="chip">Requirements analysis</span><span class="chip">Proofs of concept</span><span class="chip">Testing &amp; UAT</span><span class="chip">Documentation</span><span class="chip">Git</span></div></div>
+  </div>
+</section>
+
+<section id="experience">
+  <h2>Experience</h2>
+  <div class="job"><h3>Business Intelligence Specialist</h3><div class="meta">Santé Québec, Montréal, QC · November 2024 – Present</div>
+    <ul><li>Led data integration work on the provincial product database using Microsoft Fabric, SQL, and Python.</li>
+    <li>Develop and maintain Power BI operational and management reports for procurement, group purchasing, logistics, project portfolios, and performance monitoring, including semantic models, Power Query transformations, DAX measures, and KPIs.</li></ul></div>
+  <div class="job"><h3>Data Analyst</h3><div class="meta">Metabase · May 2023 – June 2024</div>
+    <ul><li>Designed and deployed Power BI dashboards to improve how operational data is organized and presented for decision-making.</li>
+    <li>Extracted, prepared, cleaned, and analyzed multi-source data with SQL and Python.</li>
+    <li>Built reusable queries, transformation logic, and report components to improve consistency and cut manual work.</li>
+    <li>Trained clients to use Power BI dashboards and supported them throughout delivery.</li></ul></div>
+  <div class="job"><h3>Research Data Analyst</h3><div class="meta">Medialis Ltd. · Freelance, United Kingdom · March 2021 – January 2023</div>
+    <ul><li>Collected research data from surveys, databases, and online sources, including web scraping and API-based extraction.</li>
+    <li>Cleaned, structured, validated, and analyzed datasets with Excel and Python.</li>
+    <li>Developed repeatable data preparation processes and documented methods and findings.</li></ul></div>
+</section>
+
+<section id="education">
+  <h2>Education &amp; Certification</h2>
+  <div class="grid">
+    <div class="card"><h3>Graduate Diploma (DESS), Business Analysis – Information Technology</h3><p>HEC Montréal · 2026</p></div>
+    <div class="card"><h3>Master of Science, Data Science</h3><p>ENSA, Morocco · 2021</p></div>
+    <div class="card"><h3>Bachelor’s Degree in Computer Science</h3><p>Faculty of Sciences Hassan II, Morocco · 2019</p></div>
+    <div class="card"><h3>Microsoft Certified: Power Automate RPA Developer Associate (PL-500)</h3><p>Languages: French – Fluent · English – Fluent</p></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <p style="font-size:18px;color:var(--text);margin-top:0">Let’s talk about your data.</p>
+  <p><a href="mailto:Soufianegnina@gmail.com">Soufianegnina@gmail.com</a> · <a href="https://www.linkedin.com/in/soufiane-lagnina/" target="_blank" rel="noopener">LinkedIn</a></p>
+  <p>© Soufiane Lagnina · Montréal, QC</p>
+</footer>
+</div>
+</body>
+</html>
