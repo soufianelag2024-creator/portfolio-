@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sales Performance Dashboard</title>
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--line:#e2e8f0;--txt:#0f172a;--mut:#64748b;--c1:#0ea5e9;--c2:#16a34a;--c3:#f97316;--c4:#8b5cf6;--up:#16a34a;--dn:#dc2626;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c2e;--line:#243049;--txt:#f1f5f9;--mut:#94a3b8;--c1:#38bdf8;--c2:#22c55e;--c3:#fb923c;--c4:#a78bfa;--up:#22c55e;--dn:#f87171;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#131c2e;--line:#243049;--txt:#f1f5f9;--mut:#94a3b8;--c1:#38bdf8;--c2:#22c55e;--c3:#fb923c;--c4:#a78bfa;--up:#22c55e;--dn:#f87171;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 32px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+h1{font-size:22px;margin:0;letter-spacing:-.01em}
+.sub{color:var(--mut);font-size:12px;margin-top:2px}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button,select{font:inherit;color:var(--mut);background:none;border:0;border-radius:7px;padding:6px 11px;cursor:pointer}
+.seg button.on{background:var(--c1);color:#fff;font-weight:600}
+select{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.k .l{color:var(--mut);font-size:12px}.k .v{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:2px 0}
+.d{font-size:12px;font-weight:600}.up{color:var(--up)}.dn{color:var(--dn)}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:800px){.grid,.grid2{grid-template-columns:1fr}}
+h2{font-size:13px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
+h2 small{color:var(--mut);font-weight:400}
+.ch{position:relative;height:260px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:right;padding:8px 6px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mut);font-weight:500;font-size:12px;cursor:pointer;user-select:none}
+tr.sel td{background:color-mix(in srgb,var(--c1) 12%,transparent)}
+tbody tr{cursor:pointer}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;background:var(--line);font-size:11px;color:var(--mut);margin-left:6px;cursor:pointer}
+.note{color:var(--mut);font-size:11px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div><h1>Sales Performance Dashboard</h1><div class="sub">2026 · Sample data · Click any chart or table row to filter</div></div>
+ <div class="ctrls">
+  <div class="seg" id="metric"><button data-m="rev" class="on">Revenue</button><button data-m="ord">Orders</button></div>
+  <select id="period" aria-label="Period"></select>
+  <select id="cat" aria-label="Category"></select>
+ </div>
+</header>
+<section class="kpis" id="kpis"></section>
+<section class="grid">
+ <div class="card"><h2><span id="t1">Trend</span><small id="flt"></small></h2><div class="ch"><canvas id="c1"></canvas></div></div>
+ <div class="card"><h2>Share by region <small>click to filter</small></h2><div class="ch"><canvas id="c3"></canvas></div></div>
+</section>
+<section class="grid2">
+ <div class="card"><h2>By category <small>click to filter</small></h2><div class="ch"><canvas id="c2"></canvas></div></div>
+ <div class="card"><h2>Regional breakdown <small>click headers to sort</small></h2>
+  <table><thead><tr><th data-k="n">Region</th><th data-k="rev">Revenue</th><th data-k="ord">Orders</th><th data-k="aov">AOV</th><th data-k="g">Growth</th></tr></thead><tbody id="tb"></tbody></table>
+  <div class="note">Growth compares the last month of the period with the first.</div></div>
+</section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const R=["West","East","South","North"],C=["Tech","Home","Apparel","Other"];
+const base={West:1,East:.88,South:.7,North:.5},share={Tech:.38,Home:.27,Apparel:.2,Other:.15},aov={Tech:310,Home:140,Apparel:70,Other:95};
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const D={};R.forEach(r=>{D[r]={};C.forEach(c=>{D[r][c]=M.map((_,i)=>{const s=1+.55*i/11+.1*Math.sin(i*1.1)+(rnd()-.5)*.08;const rev=95*base[r]*share[c]*s*1000;return{rev,ord:rev/aov[c]}})})});
+const P={"Full year":[0,11],"H1":[0,5],"H2":[6,11],"Q1":[0,2],"Q2":[3,5],"Q3":[6,8],"Q4":[9,11]};
+const S={r:"All",c:"All",m:"rev",p:"Full year",sk:"rev",sd:-1};
+const $=id=>document.getElementById(id);
+const money=v=>v>=1e6?"$"+(v/1e6).toFixed(2)+"M":"$"+Math.round(v/1e3)+"K";
+const num=v=>Math.round(v).toLocaleString("en-US");
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const regs=()=>S.r==="All"?R:[S.r], cats=()=>S.c==="All"?C:[S.c];
+function sum(rs,cs,a,b){let rev=0,ord=0;rs.forEach(r=>cs.forEach(c=>{for(let i=a;i<=b;i++){rev+=D[r][c][i].rev;ord+=D[r][c][i].ord}}));return{rev,ord}}
+function month(rs,cs,i){return sum(rs,cs,i,i)}
+const fm=v=>S.m==="rev"?money(v):num(v);
+$("period").innerHTML=Object.keys(P).map(p=>`<option>${p}</option>`).join("");
+$("cat").innerHTML=["All",...C].map(c=>`<option value="${c}">${c==="All"?"All categories":c}</option>`).join("");
+$("period").onchange=e=>{S.p=e.target.value;draw()};
+$("cat").onchange=e=>{S.c=e.target.value;draw()};
+$("metric").onclick=e=>{const m=e.target.dataset.m;if(!m)return;S.m=m;[...$("metric").children].forEach(b=>b.classList.toggle("on",b.dataset.m===m));draw()};
+document.querySelectorAll("th").forEach(t=>t.onclick=()=>{const k=t.dataset.k;S.sd=S.sk===k?-S.sd:-1;S.sk=k;draw()});
+const charts={};
+function mk(id,cfg){charts[id]=new Chart($(id),cfg)}
+Chart.defaults.font.family="system-ui,-apple-system,sans-serif";
+function base_opts(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:css("--mut"),boxWidth:10,usePointStyle:true}},tooltip:{callbacks:{label:c=>" "+c.dataset.label+": "+fm(c.parsed.y??c.parsed)}}}}}
+function axes(){const g={color:css("--line")},t={color:css("--mut")};return{x:{grid:{display:false},ticks:t,border:{display:false}},y:{grid:g,ticks:{...t,callback:v=>fm(v)},border:{display:false}}}}
+const colors=()=>[css("--c1"),css("--c2"),css("--c3"),css("--c4")];
+function draw(){
+ const [a,b]=P[S.p],rs=regs(),cs=cats(),col=colors(),k=S.m;
+ const t=sum(rs,cs,a,b),m1=month(rs,cs,b)[k],m0=month(rs,cs,a)[k],g=(m1/m0-1)*100,aovv=t.rev/t.ord;
+ const kp=[["Revenue",money(t.rev)],["Orders",num(t.ord)],["Avg order value","$"+aovv.toFixed(0)],["Period growth",null]];
+ $("kpis").innerHTML=kp.map(([l,v],i)=>`<div class="card k"><div class="l">${l}</div><div class="v">${v??((g>=0?"+":"")+g.toFixed(1)+"%")}</div><div class="d ${g>=0?"up":"dn"}">${i===3?(g>=0?"▲ ":"▼ ")+(k==="rev"?"revenue":"orders"):S.p+" · "+(S.r==="All"?"All regions":S.r)}</div></div>`).join("");
+ $("flt").innerHTML=(S.r!=="All"?`<span class="tag" onclick="S.r='All';draw()">${S.r} ✕</span>`:"")+(S.c!=="All"?`<span class="tag" onclick="S.c='All';$('cat').value='All';draw()">${S.c} ✕</span>`:"");
+ $("t1").textContent=(k==="rev"?"Monthly revenue":"Monthly orders");
+ const labels=M.slice(a,b+1),ds=rs.map((r,i)=>({label:r,data:labels.map((_,j)=>month([r],cs,a+j)[k]),borderColor:col[R.indexOf(r)],backgroundColor:col[R.indexOf(r)]+"22",fill:rs.length===1,tension:.35,borderWidth:2.5,pointRadius:3}));
+ const o=base_opts();o.scales=axes();o.interaction={mode:"index",intersect:false};
+ upd("c1","line",{labels,datasets:ds},o);
+ // category bar
+ const o2=base_opts();o2.scales=axes();o2.plugins.legend.display=false;
+ o2.onClick=(e,el)=>{if(el.length){const c=C[el[0].index];S.c=S.c===c?"All":c;$("cat").value=S.c;draw()}};
+ upd("c2","bar",{labels:C,datasets:[{label:k==="rev"?"Revenue":"Orders",data:C.map(c=>sum(regs(),[c],a,b)[k]),backgroundColor:C.map((c,i)=>S.c==="All"||S.c===c?col[i]:col[i]+"44"),borderRadius:8}]},o2);
+ // region doughnut
+ const o3=base_opts();o3.cutout="62%";o3.plugins.tooltip.callbacks.label=c=>" "+c.label+": "+fm(c.parsed);
+ o3.onClick=(e,el)=>{if(el.length){const r=R[el[0].index];S.r=S.r===r?"All":r;draw()}};
+ upd("c3","doughnut",{labels:R,datasets:[{data:R.map(r=>sum([r],cs,a,b)[k]),backgroundColor:R.map((r,i)=>S.r==="All"||S.r===r?col[i]:col[i]+"44"),borderColor:css("--card"),borderWidth:3}]},o3);
+ // table
+ const rows=R.map(r=>{const s=sum([r],cs,a,b);return{n:r,rev:s.rev,ord:s.ord,aov:s.rev/s.ord,g:(month([r],cs,b)[k]/month([r],cs,a)[k]-1)*100}});
+ rows.sort((x,y)=>S.sk==="n"?x.n.localeCompare(y.n)*-S.sd:(y[S.sk]-x[S.sk])*(S.sd===-1?1:-1));
+ $("tb").innerHTML=rows.map(r=>`<tr class="${S.r===r.n?"sel":""}" onclick="S.r=S.r==='${r.n}'?'All':'${r.n}';draw()"><td>${r.n}</td><td>${money(r.rev)}</td><td>${num(r.ord)}</td><td>$${r.aov.toFixed(0)}</td><td class="${r.g>=0?"up":"dn"}">${r.g>=0?"▲":"▼"} ${Math.abs(r.g).toFixed(1)}%</td></tr>`).join("");
+}
+function upd(id,type,data,opts){
+ if(charts[id]&&charts[id].config.type===type){const c=charts[id];c.data=data;c.options=opts;c.update()}
+ else{if(charts[id])charts[id].destroy();mk(id,{type,data,options:opts})}
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setTimeout(draw,50));
+draw();
+</script>
+</body>
+</html>
